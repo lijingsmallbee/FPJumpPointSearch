@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using TrueSync;
 public class Grid
 {
     public bool showDebug;
@@ -37,9 +37,13 @@ public class Grid
         }
     }
 
-    public float _nodeUnitSize;
+    public FP _nodeUnitSize;
 
     private Transform _gridTransform = null;
+
+    private TSVector _transformPosition;
+
+    private TSVector _transformScale;
 
     private LayerMask _unwalkableLayerMask;
 
@@ -84,9 +88,11 @@ public class Grid
         return path.closedList;
     }
 
-    public void InitializeGrid(Transform gridTransform, LayerMask unwalkableLayerMask, float nodeUnitSize, int nodeAmountX, int nodeAmountY)
+    public void InitializeGrid(Transform gridTransform, LayerMask unwalkableLayerMask, FP nodeUnitSize, int nodeAmountX, int nodeAmountY)
     {
         _gridTransform = gridTransform;
+        _transformPosition = new TSVector(gridTransform.position.x, gridTransform.position.y, gridTransform.position.z);
+        _transformScale = new TSVector(gridTransform.localScale.x,gridTransform.localScale.y,gridTransform.localScale.z);
         _unwalkableLayerMask = unwalkableLayerMask;
         _nodeUnitSize = nodeUnitSize;
         _nodeAmountX = nodeAmountX;
@@ -136,20 +142,21 @@ public class Grid
 
     private void _CreateGrid()
     {
-        Vector3 xOffset = Vector3.right * (_gridTransform.localScale.x / 2);
-        Vector3 yOffset = Vector3.forward * (_gridTransform.localScale.z / 2);
-        Vector3 worldBottomLeft = _gridTransform.position - xOffset - yOffset;
+        TSVector xOffset = TSVector.right * (_transformScale.x/2);
+        TSVector yOffset = TSVector.forward * (_transformScale.z / 2);
+        TSVector worldBottomLeft = _transformPosition - xOffset - yOffset;
 
         for (int x = 0; x < _nodeAmountX; x++)
         {
             for (int y = 0; y < _nodeAmountY; y++)
             {
-                float xCalculation = x * _nodeUnitSize;
-                float yCalculation = y * _nodeUnitSize;
-                Vector3 worldPoint = worldBottomLeft + (Vector3.right * xCalculation) + (Vector3.forward * yCalculation);
+                FP xCalculation = x * _nodeUnitSize;
+                FP yCalculation = y * _nodeUnitSize;
+                TSVector worldPoint = worldBottomLeft + (TSVector.right * xCalculation) + (TSVector.forward * yCalculation);
 
                 RaycastHit hit;
-                bool walkable = !(Physics.SphereCast(worldPoint + Vector3.up * 500, _nodeUnitSize / 2,
+                TSVector pos = worldPoint + TSVector.up * 500;
+                bool walkable = !(Physics.SphereCast(new Vector3((float)pos.x,(float)pos.y,(float)pos.z), (float)_nodeUnitSize / 2,
                                     Vector3.down, out hit, Mathf.Infinity, _unwalkableLayerMask));
 
                 _grid[x, y] = new Node(worldPoint, x, y, _nodeUnitSize);
@@ -162,18 +169,35 @@ public class Grid
 
     public Node GetNodeFromPoint(int nodeX, int nodeY)
     {
-        float percentX = nodeX / (float)_nodeAmountX;
-        float percentY = nodeY / (float)_nodeAmountY;
+        FP percentX = nodeX / (FP)_nodeAmountX;
+        FP percentY = nodeY / (FP)_nodeAmountY;
 
-        percentX = Mathf.Clamp01(percentX);
-        percentY = Mathf.Clamp01(percentY);
+        percentX = TSMath.Clamp(percentX,FP.Zero,FP.One);
+        percentY = TSMath.Clamp(percentY, FP.Zero, FP.One);
 
-        int x = Mathf.RoundToInt((((_nodeAmountX / _nodeUnitSize)) * percentX));
-        int y = Mathf.RoundToInt((((_nodeAmountY / _nodeUnitSize)) * percentY));
+        int x = (int)TSMath.Round((((_nodeAmountX / _nodeUnitSize)) * percentX));
+        int y = (int)TSMath.Round((((_nodeAmountY / _nodeUnitSize)) * percentY));
 
         x = Mathf.Clamp(x, 0, _nodeAmountX - 1);
         y = Mathf.Clamp(y, 0, _nodeAmountY - 1);
         
+        return _grid[x, y];
+    }
+
+    public Node GetNodeFromPoint(FP nodeX, FP nodeY)
+    {
+        FP percentX = nodeX / (FP)_nodeAmountX;
+        FP percentY = nodeY / (FP)_nodeAmountY;
+
+        percentX = TSMath.Clamp(percentX, FP.Zero, FP.One);
+        percentY = TSMath.Clamp(percentY, FP.Zero, FP.One);
+
+        int x = (int)TSMath.Round((((_nodeAmountX / _nodeUnitSize)) * percentX));
+        int y = (int)TSMath.Round((((_nodeAmountY / _nodeUnitSize)) * percentY));
+
+        x = Mathf.Clamp(x, 0, _nodeAmountX - 1);
+        y = Mathf.Clamp(y, 0, _nodeAmountY - 1);
+
         return _grid[x, y];
     }
 

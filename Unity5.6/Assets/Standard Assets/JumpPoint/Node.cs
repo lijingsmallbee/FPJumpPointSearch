@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-
+using TrueSync;
 public class Node : IHeapItem<Node>
 {
     public Node parent;
-    public Vector3 worldPosition;
-    public float nodeSize;
+    public TSVector worldPosition;
+    public FP nodeSize;
     public int x;
     public int y;
 
@@ -33,7 +33,7 @@ public class Node : IHeapItem<Node>
         }
     }
 
-    public Node(Vector3 worldPoint, int _x, int _y, float _nodeSize)
+    public Node(TSVector worldPoint, int _x, int _y, FP _nodeSize)
     {
         worldPosition = worldPoint;
         nodeSize = _nodeSize;
