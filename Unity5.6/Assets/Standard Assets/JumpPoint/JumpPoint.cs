@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using TrueSync;
 public class JumpPoint : MonoBehaviour
 {
     [SerializeField]
@@ -10,7 +10,7 @@ public class JumpPoint : MonoBehaviour
     private int _nodeAmountY;
 
     [SerializeField]
-    private float _nodeUnitSize;
+    private FP _nodeUnitSize;
 
     [SerializeField]
     private Transform _gridTransform;

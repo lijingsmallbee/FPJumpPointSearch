@@ -38,8 +38,8 @@ public class Grid
     }
 
     public FP _nodeUnitSize;
-
-    private Transform _gridTransform = null;
+    //whitebai 2017.5.9
+    //private Transform _gridTransform = null;
 
     private TSVector _transformPosition;
 
@@ -90,7 +90,8 @@ public class Grid
 
     public void InitializeGrid(Transform gridTransform, LayerMask unwalkableLayerMask, FP nodeUnitSize, int nodeAmountX, int nodeAmountY)
     {
-        _gridTransform = gridTransform;
+        //whitebai 2017.5.9
+        //_gridTransform = gridTransform;
         _transformPosition = new TSVector(gridTransform.position.x, gridTransform.position.y, gridTransform.position.z);
         _transformScale = new TSVector(gridTransform.localScale.x,gridTransform.localScale.y,gridTransform.localScale.z);
         _unwalkableLayerMask = unwalkableLayerMask;

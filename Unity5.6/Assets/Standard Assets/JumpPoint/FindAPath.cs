@@ -6,7 +6,8 @@ using System.Diagnostics;
 
 public class FindAPath
 {
-    public event Action<int> timer = null;
+    //whitebai 2017.5.9
+    //public event Action<int> timer = null;
     private Node _startNode;
     private Node _targetNode;
 
@@ -30,6 +31,7 @@ public class FindAPath
             sw.Stop();
             TimeSpan ts = sw.Elapsed;
             UnityEngine.Debug.Log("A* Path - Path found in : " + ts.Milliseconds + " ms");
+            //whitebai 2017.5.9
          //   EventHandler.Instance.Broadcast(new PathTimerEvent(ts.Milliseconds));
             return _RetracePath();
         }
@@ -38,7 +40,8 @@ public class FindAPath
             sw.Stop();
             TimeSpan ts = sw.Elapsed;
             UnityEngine.Debug.Log("A* Path - No path found in : " + ts.Milliseconds + " ms");
-        //    EventHandler.Instance.Broadcast(new PathTimerEvent(ts.Milliseconds));
+            //whitebai 2017.5.9
+            //    EventHandler.Instance.Broadcast(new PathTimerEvent(ts.Milliseconds));
             return null;
         }
     }
