@@ -1,6 +1,4 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-Shader "Nirvana/Editor/GridOutline"
+﻿Shader "Nirvana/Editor/GridOutline"
 {
 	Properties
 	{}
@@ -34,7 +32,7 @@ Shader "Nirvana/Editor/GridOutline"
 			v2f vert (appdata v)
 			{
 				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);
+				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 				return o;
 			}
 			
