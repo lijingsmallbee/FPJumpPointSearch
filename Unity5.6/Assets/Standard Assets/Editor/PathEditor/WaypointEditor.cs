@@ -160,7 +160,7 @@ namespace SWS
                     return;
                 }
 
-                if (script.transform.FindChild(pathName) != null)
+                if (script.transform.Find(pathName) != null)
                 {
                     Debug.LogWarning("Path name already given. Cancelling.");
                     return;

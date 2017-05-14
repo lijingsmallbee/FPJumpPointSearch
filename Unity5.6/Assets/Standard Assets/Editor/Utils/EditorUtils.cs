@@ -29,6 +29,7 @@ using System.Text;
 			write.Flush();
 			write.Close();
 			write.Dispose();
+        AssetDatabase.Refresh();
 			#endif
 		}
 

@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using TrueSync;
 namespace SWS
 {
     /// <summary>
@@ -17,11 +18,11 @@ namespace SWS
     /// <summary>
 	struct MapGridT 
 	{
-		public float X;
-		public float Z;
+		public FP X;
+		public FP Z;
 		public int Width;
 		public int Height;
-		public float GridSize;
+		public FP GridSize;
 		public int[] pGrid;
 	};
 	class Polygon
@@ -133,10 +134,12 @@ namespace SWS
 				BinaryWriter bw = new BinaryWriter(fs);
 			//	string fileName = filepath;//文件名字
 				Vector3 offset = editPlane.transform.position;
-				//write offset x
-				bw.Write(offset.x);
-				//write offset z
-				bw.Write(offset.z);
+                //write offset x
+                FP offsetX = (FP)(offset.x);
+				bw.Write(offsetX.RawValue);
+                //write offset z
+                FP offsetZ = (FP)offset.z;
+				bw.Write(offsetZ.RawValue);
 				//write width
 				bw.Write(editPlane.width);
 				//write height
@@ -183,11 +186,14 @@ namespace SWS
 				//offset
 				sb.Append("type octile").Append("\r\n");
 				Vector3 offset = editPlane.transform.position;
-				sb.Append("X ").Append(offset.x).Append("\r\n"); 
-				sb.Append("Z ").Append(offset.z).Append("\r\n");
+                FP x = (FP)offset.x;
+				sb.Append("X ").Append(x.RawValue).Append("\r\n");
+                FP z = (FP)offset.z;
+				sb.Append("Z ").Append(z.RawValue).Append("\r\n");
 				sb.Append("width ").Append(editPlane.width).Append("\r\n"); 
 				sb.Append("height ").Append(editPlane.height).Append("\r\n");
-				sb.Append("size ").Append(editPlane.gridsize).Append("\r\n"); 
+                FP size = (FP)editPlane.gridsize;
+				sb.Append("size ").Append(size.RawValue).Append("\r\n"); 
 				sb.Append("map").Append("\r\n");
 				int [] gridInfo = editPlane.GetGridInfo();
 			//	int len = gridInfo.Length;
@@ -265,10 +271,10 @@ namespace SWS
 							LogManager.Log(log.ToString());
 							return;
 						}
-						editPlane.transform.position = new Vector3(myGrid.X,0f,myGrid.Z);
+						editPlane.transform.position = new Vector3((float)myGrid.X,0f,(float)myGrid.Z);
 						editPlane.width = myGrid.Width;
 						editPlane.height = myGrid.Height;
-						editPlane.gridsize = myGrid.GridSize;
+						editPlane.gridsize = (float)myGrid.GridSize;
 						editPlane.GenerateMesh();
 						int[] gridData = editPlane.GetGridInfo();
 						
@@ -321,10 +327,10 @@ namespace SWS
 							LogManager.Log(log.ToString());
 							return;
 						}
-						editPlane.transform.position = new Vector3(myGrid.X,0f,myGrid.Z);
+						editPlane.transform.position = new Vector3((float)myGrid.X,0f,(float)myGrid.Z);
 						editPlane.width = myGrid.Width;
 						editPlane.height = myGrid.Height;
-						editPlane.gridsize = myGrid.GridSize;
+						editPlane.gridsize = (float)myGrid.GridSize;
 						editPlane.GenerateMesh();
 						int [] gridInfo = editPlane.GetGridInfo();
 						int len = gridInfo.Length;

@@ -20,8 +20,8 @@ public class Grid
     }
     #endregion
 
-    private int _nodeAmountX;
-    private int _nodeAmountY;
+    protected int _nodeAmountX;
+    protected int _nodeAmountY;
     public int NodeAmountX
     {
         get
@@ -41,16 +41,16 @@ public class Grid
     //whitebai 2017.5.9
     //private Transform _gridTransform = null;
 
-    private TSVector _transformPosition;
+    protected TSVector _transformPosition;
 
-    private TSVector _transformScale;
+    protected TSVector _transformScale = TSVector.one;
 
-    private LayerMask _unwalkableLayerMask;
+    protected LayerMask _unwalkableLayerMask;
 
-    private FindPath _path = null;
+    protected FindPath _path = null;
 
 
-    private Node[,] _grid = null;
+    protected Node[,] _grid = null;
     //temp accessor
     public Node[,] WorldGrid
     {

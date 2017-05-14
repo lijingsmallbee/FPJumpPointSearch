@@ -9,15 +9,15 @@ public class FindPath
     
     public List<Node> jumpNodes;
 
-    private Node _startNode;
-    private Node _targetNode;
+    protected Node _startNode;
+    protected Node _targetNode;
 
-    private Grid _grid;
+    protected Grid _grid;
 
-    private Heap<Node> openSet;
-    private HashSet<Node> openSetContainer;
-    private HashSet<Node> closedSet;
-    private bool _forced;
+    protected Heap<Node> openSet;
+    protected HashSet<Node> openSetContainer;
+    protected HashSet<Node> closedSet;
+    protected bool _forced;
 
     public List<Node> GetPath(Node startNode, Node targetNode)
     {

@@ -9,6 +9,8 @@ public class Node : IHeapItem<Node>
     public FP nodeSize;
     public int x;
     public int y;
+    public int currentValue;
+    public int originalValue;
 
     private int _heapIndex = 0;
     public int HeapIndex

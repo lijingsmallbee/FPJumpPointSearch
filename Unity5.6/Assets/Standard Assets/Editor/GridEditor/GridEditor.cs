@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Collections.Generic;
 using SWS;
+using TrueSync;
 namespace Nirvana.Scene
 {
 	[CustomEditor(typeof(Grid))]
@@ -71,11 +72,14 @@ namespace Nirvana.Scene
 				//offset
 				sb.Append("type octile").Append("\r\n");
 				Vector3 offset = grid.transform.position;
-				sb.Append("X ").Append(offset.x).Append("\r\n"); 
-				sb.Append("Z ").Append(offset.z).Append("\r\n");
-				sb.Append("width ").Append(grid.Column).Append("\r\n"); 
-				sb.Append("height ").Append(grid.Row).Append("\r\n");
-				sb.Append("size ").Append(grid.GridSize).Append("\r\n"); 
+                FP x = (FP)offset.x;
+                sb.Append("X ").Append(x.RawValue).Append("\r\n");
+                FP z = (FP)offset.z;
+                sb.Append("Z ").Append(z.RawValue).Append("\r\n");
+                sb.Append("width ").Append(grid.Column).Append("\r\n");
+                sb.Append("height ").Append(grid.Row).Append("\r\n");
+                FP size = (FP)grid.GridSize;
+                sb.Append("size ").Append(size.RawValue).Append("\r\n"); 
 				sb.Append("map").Append("\r\n");
 				
 				for(int i = 0; i < grid.Row; ++ i)
@@ -122,13 +126,13 @@ namespace Nirvana.Scene
 							{
 								if( kv.Count >1)
 								{
-									myGrid.X = float.Parse(kv[1]);
+									myGrid.X = FP.FromRaw(long.Parse(kv[1]));
 								}
 							}
 							if( kv[0] == "Z" )
 							{
 								if( kv.Count>1)
-									myGrid.Z = float.Parse(kv[1]);
+									myGrid.Z = FP.FromRaw(long.Parse(kv[1]));
 							}
 							if( kv[0] == "width")
 							{
@@ -143,7 +147,7 @@ namespace Nirvana.Scene
 							if( kv[0] == "size")
 							{
 								if( kv.Count>1)
-									myGrid.GridSize = float.Parse(kv[1]);
+									myGrid.GridSize = FP.FromRaw(long.Parse(kv[1]));
 							}
 						}
 						if( myGrid.Width == 0 || myGrid.Height==0)
@@ -153,8 +157,8 @@ namespace Nirvana.Scene
 							LogManager.Log(log.ToString());
 							return;
 						}
-						grid.transform.position = new Vector3(myGrid.X,0f,myGrid.Z);
-						grid.GridSize = myGrid.GridSize;
+						grid.transform.position = new Vector3((float)myGrid.X,0f,(float)myGrid.Z);
+						grid.GridSize = (float)myGrid.GridSize;
 						grid.Resize(myGrid.Height,myGrid.Width,false);
 						for( int i=0; i<myGrid.Height; i++ )
 						{
@@ -184,7 +188,20 @@ namespace Nirvana.Scene
 				}
 			}
 
-			if (GUILayout.Button("CreateFromPath"))
+            if (GUILayout.Button("MakeAllWalkable"))
+            {
+            //    Grid grid = target as Grid;
+                for (int i = 0; i < grid.Row; ++i)
+                {
+                    for (int j = 0; j < grid.Column; ++j)
+                    {
+                        grid.SetCellCollision(i, j, Cell.CollisionType.Walkable);
+                    }
+
+                }
+            }
+
+                if (GUILayout.Button("CreateFromPath"))
 			{
 				
 				int walkNum = 0,nonWalkNum = 0;
