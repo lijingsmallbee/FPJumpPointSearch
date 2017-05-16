@@ -39,13 +39,31 @@ public class GridWithAgent:Grid
 
         return _grid[x, y];
     }
-
+    //这个是否可以移动是相对的，强壮的单位会无视比自己弱小的单位
+    //还有就是热气球，野猪等直奔对方建筑类型的个体，也是无视碰撞的
     public new bool IsWalkable(int x, int y)
     {
-        bool canmove = _agent.BlockValue > _grid[x, y].currentValue;
-        bool canmove2 = _agent.IgnoreBlock || (!_agent.IgnoreBlock && _grid[x, y].originalValue == 0);
-        canmove = canmove && canmove2;
-        return (x >= 0 && x < _nodeAmountX) && (y >= 0 && y < _nodeAmountY) && canmove;
+        bool canMove = false;
+        eAgentType aType = _agent.AgentType;
+        if (aType == eAgentType.ground)
+        {
+            if(_agent.IgnoreBlock == true)
+            {
+                canMove = true;
+            }
+            else if (_agent.GroundBlockValue > _grid[x, y].curGroundValue)
+            {
+                canMove = true;
+            }
+        }
+        else if (aType == eAgentType.flying)
+        {
+            if (_agent.AirBlockValue > _grid[x, y].curAirValue)
+            {
+                canMove = true;
+            }
+        }
+        return (x >= 0 && x < _nodeAmountX) && (y >= 0 && y < _nodeAmountY) && canMove;
     }
 
     public void CreateFromString(string buffer)

@@ -6,8 +6,8 @@ using System;
 using TrueSync;
 public class GridManager
 {
-    private Dictionary<GridType, Grid> allGrids = new Dictionary<GridType, Grid>();
-    public Grid GetGridByType(GridType gType)
+    private Dictionary<eGridType, Grid> allGrids = new Dictionary<eGridType, Grid>();
+    public Grid GetGridByType(eGridType gType)
     {
         Grid outV = null;
         allGrids.TryGetValue(gType, out outV);
