@@ -7,7 +7,7 @@ public class GameStarter : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         //create battleinstance
-        BaseBattleInstance inst = new BaseBattleInstance();
+        BaseBattleInstance inst = new GameBattleInstance();
 		
 	}
 	

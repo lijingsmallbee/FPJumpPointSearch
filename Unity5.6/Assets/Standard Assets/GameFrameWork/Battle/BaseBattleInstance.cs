@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseBattleInstance:FSBattleInstance
+public abstract class BaseBattleInstance:FSBattleInstance
 {
     static private BaseBattleInstance m_inst;
     private FrameController _frameController = new FrameController();
@@ -44,9 +44,10 @@ public class BaseBattleInstance:FSBattleInstance
     }
     #endregion
     #region public functions
-    public void Start()
+    public virtual void Start()
     {
         _frameController.Reset();
     }
+    public abstract void Init();
 #endregion
 }
