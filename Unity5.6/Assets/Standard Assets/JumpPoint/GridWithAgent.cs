@@ -81,10 +81,10 @@ public class GridWithAgent:Grid
         }
         if(isRightMap)
         {
-            _grid = new Node[_nodeAmountX, _nodeAmountY];
             JumpFindPathWithGrid findPath = new JumpFindPathWithGrid();
             findPath.Initialize(this);
             _path = findPath;
+            //read grid file info
             string offsetx = TextUtils.readLine(buffer, ref start);
             words = TextUtils.splitLine(offsetx);
             FP offsetX = FP.FromRaw(long.Parse(words[1]));
@@ -102,7 +102,8 @@ public class GridWithAgent:Grid
             words = TextUtils.splitLine(size);
             _nodeUnitSize = FP.FromRaw(long.Parse(words[1]));
             string nouseTag = TextUtils.readLine(buffer, ref start);
-            
+            //read file
+            CreateGrid(_nodeAmountX, _nodeAmountY);
             for (int i = 0; i < _nodeAmountY; ++i)
             {
                 string blocks = TextUtils.readLine(buffer, ref start);
@@ -114,4 +115,22 @@ public class GridWithAgent:Grid
             }
         }
     }
+
+    #region private functions
+    private void CreateGrid(int width,int height)
+    {
+        _nodeAmountX = width;
+        _nodeAmountY = height;
+        _grid = new Node[_nodeAmountX, _nodeAmountY];
+        for(int i=0;i<height;++i)
+        {
+            for(int j=0;j<width;++j)
+            {
+                TSVector worldPos = _transformPosition + new TSVector(_nodeUnitSize * ((FP)j + FP.Half), FP.Zero, _nodeUnitSize * ((FP)i + FP.Half));
+                Node newNode = new Node(worldPos,j,i,_nodeUnitSize);
+                _grid[i,j] = newNode;
+            }
+        }
+    }
+#endregion
 }

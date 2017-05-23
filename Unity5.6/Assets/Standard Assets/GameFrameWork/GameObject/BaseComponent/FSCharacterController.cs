@@ -5,7 +5,7 @@ using UnityEngine;
 using TrueSync;
 public class FSCharacterController : BaseFSComponent
 {
-    FP _radisu;
+    FP _radius;
     MoveAgent _agent = null;
 
     public override void OnAwake()

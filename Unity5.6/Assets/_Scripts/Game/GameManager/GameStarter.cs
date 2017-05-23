@@ -8,7 +8,7 @@ public class GameStarter : MonoBehaviour {
 	void Start () {
         //create battleinstance
         BaseBattleInstance inst = new GameBattleInstance();
-		
+        inst.Init();
 	}
     private float passtime = 0f;
 	// Update is called once per frame
@@ -29,6 +29,8 @@ public class GameStarter : MonoBehaviour {
         }
         if(GUILayout.Button("Goblin"))
         {
+            FSGameObject gob = new FSGameObject("goblin");
+            gob.AddComponent<FSCharacterController>();
             //spawn goblin
         }
         if (GUILayout.Button("boar knight"))

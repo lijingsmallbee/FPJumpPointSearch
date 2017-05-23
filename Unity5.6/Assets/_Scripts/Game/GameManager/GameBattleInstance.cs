@@ -10,11 +10,14 @@ public class GameBattleInstance : BaseBattleInstance
     public override void Start()
     {
         base.Start();
-        TextAsset asset = Resources.Load("Levels/GridInfo") as TextAsset;
-        _gridManager.InitGrid(asset.text, eGridType.one);
+        
     }
     public override void Init()
     {
-        
+        TextAsset asset = Resources.Load("Levels/GridInfo") as TextAsset;
+        _gridManager.InitGrid(asset.text, eGridType.one);
+
+        asset = Resources.Load("Levels/GridInfo4") as TextAsset;
+        _gridManager.InitGrid(asset.text, eGridType.four);
     }
 }

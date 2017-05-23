@@ -10,7 +10,7 @@ public class FSGameObject : FSObject
     {
         _name = name;
     }
-    private SortedDictionary<string, BaseFSComponent> allComponents;
+    private SortedDictionary<string, BaseFSComponent> allComponents = new SortedDictionary<string, BaseFSComponent>();
 
     public override void OnStep()
     {
