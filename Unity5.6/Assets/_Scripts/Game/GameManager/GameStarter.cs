@@ -10,10 +10,15 @@ public class GameStarter : MonoBehaviour {
         BaseBattleInstance inst = new BaseBattleInstance();
 		
 	}
-	
+    private float passtime = 0f;
 	// Update is called once per frame
 	void Update () {
-		
+        passtime += Time.deltaTime;
+        if (passtime >= 0.03f)
+        {
+            BaseBattleInstance.Instance.OnStep();
+            BaseBattleInstance.Instance.OnPostStep();
+        }
 	}
 
     private void OnGUI()
