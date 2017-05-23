@@ -10,6 +10,8 @@ namespace Nirvana.Scene
 	[ExecuteInEditMode]
 	public class Grid : MonoBehaviour
 	{
+        //grid的size必须是这个数字的整数倍
+        public const int GridSizeDelta = 32;
 		// Color for grid.
 		static public Color32 ColorWalkable   = new Color32(0,  128, 0, 128);
 		static public Color32 ColorUnwalkable = new Color32(128,  0, 0, 128);
@@ -302,8 +304,8 @@ namespace Nirvana.Scene
 			}
 			m_viewType = viewType;
 
-			int segmentX = Mathf.CeilToInt(m_row / 64.0f);
-			int segmentY = Mathf.CeilToInt(m_column / 64.0f);
+			int segmentX = Mathf.CeilToInt(m_row / (float)GridSizeDelta);
+			int segmentY = Mathf.CeilToInt(m_column / (float)GridSizeDelta);
 			switch(m_viewType)
 			{
 			case ViewType.WalkableView:
@@ -351,8 +353,8 @@ namespace Nirvana.Scene
 			}
 
 			// Divide each submesh by 64 x 64.
-			int segmentX = Mathf.CeilToInt(m_row / 64.0f);
-			int segmentY = Mathf.CeilToInt(m_column / 64.0f);
+			int segmentX = Mathf.CeilToInt(m_row / (float)GridSizeDelta);
+			int segmentY = Mathf.CeilToInt(m_column / (float)GridSizeDelta);
 			m_colors = new Color32[segmentX * segmentY][];
 			m_meshs = new Mesh[segmentX * segmentY];
 			for(int i = 0; i < segmentX; ++i)
@@ -385,10 +387,10 @@ namespace Nirvana.Scene
 			mesh = new Mesh();
 			mesh.name = "GridCell: " + segX + "-" + segY;
 
-			int startRow = 64 * segX;
-			int startCol = 64 * segY;
-			int endRow = Mathf.Min(64 * segX + 64, m_row);
-			int endCol = Mathf.Min(64 * segY + 64, m_row);
+			int startRow = GridSizeDelta * segX;
+			int startCol = GridSizeDelta * segY;
+			int endRow = Mathf.Min(GridSizeDelta * segX + GridSizeDelta, m_row);
+			int endCol = Mathf.Min(GridSizeDelta * segY + GridSizeDelta, m_row);
 			int rowCount = endRow - startRow;
 			int colCount = endCol - startCol;
 
@@ -469,10 +471,10 @@ namespace Nirvana.Scene
 			var mesh = new Mesh();
 			mesh.name = "GridOutline: " + segX + "-" + segY;
 			
-			int startRow = 64 * segX;
-			int startCol = 64 * segY;
-			int endRow = Mathf.Min(64 * segX + 64, m_row);
-			int endCol = Mathf.Min(64 * segY + 64, m_row);
+			int startRow = GridSizeDelta * segX;
+			int startCol = GridSizeDelta * segY;
+			int endRow = Mathf.Min(GridSizeDelta * segX + GridSizeDelta, m_row);
+			int endCol = Mathf.Min(GridSizeDelta * segY + GridSizeDelta, m_row);
 			int rowCount = endRow - startRow;
 			int colCount = endCol - startCol;
 			
@@ -524,20 +526,20 @@ namespace Nirvana.Scene
 		// Set the color for specify grid.
 		private void SetGridColor(int row, int column, Color32 color)
 		{
-			int segmentX = Mathf.CeilToInt(m_row / 64.0f);
-			int segmentY = Mathf.CeilToInt(m_column / 64.0f);
-			int segX = Mathf.FloorToInt(row / 64.0f);
-			int segY = Mathf.FloorToInt(column / 64.0f);
+			int segmentX = Mathf.CeilToInt(m_row / (float)GridSizeDelta);
+			int segmentY = Mathf.CeilToInt(m_column / (float)GridSizeDelta);
+			int segX = Mathf.FloorToInt(row / (float)GridSizeDelta);
+			int segY = Mathf.FloorToInt(column / (float)GridSizeDelta);
 			
 			var c = m_colors[segX * segmentY + segY];
 			var m = m_meshs[segX * segmentY + segY];
-			int i = row - 64 * segX;
-			int j = column - 64 * segY;
+			int i = row - GridSizeDelta * segX;
+			int j = column - GridSizeDelta * segY;
 			
-			c[4 * (i * 64 + j) + 0] = color;
-			c[4 * (i * 64 + j) + 1] = color;
-			c[4 * (i * 64 + j) + 2] = color;
-			c[4 * (i * 64 + j) + 3] = color;
+			c[4 * (i * GridSizeDelta + j) + 0] = color;
+			c[4 * (i * GridSizeDelta + j) + 1] = color;
+			c[4 * (i * GridSizeDelta + j) + 2] = color;
+			c[4 * (i * GridSizeDelta + j) + 3] = color;
 			
 			m.colors32 = c;
 		}
@@ -545,10 +547,10 @@ namespace Nirvana.Scene
 		private void ChangeToWalkableViewSegment(
 			int segX, int segY, Color32[] colors, Mesh mesh)
 		{
-			int startRow = 64 * segX;
-			int startCol = 64 * segY;
-			int endRow = Mathf.Min(64 * segX + 64, m_row);
-			int endCol = Mathf.Min(64 * segY + 64, m_row);
+			int startRow = GridSizeDelta * segX;
+			int startCol = GridSizeDelta * segY;
+			int endRow = Mathf.Min(GridSizeDelta * segX + GridSizeDelta, m_row);
+			int endCol = Mathf.Min(GridSizeDelta * segY + GridSizeDelta, m_row);
 
 			var colorIdx = 0;
 			for(int i = startRow; i < endRow; ++i)
@@ -572,10 +574,10 @@ namespace Nirvana.Scene
 		private void ChangeToSecurityViewSegment(
 			int segX, int segY, Color32[] colors, Mesh mesh)
 		{
-			int startRow = 64 * segX;
-			int startCol = 64 * segY;
-			int endRow = Mathf.Min(64 * segX + 64, m_row);
-			int endCol = Mathf.Min(64 * segY + 64, m_row);
+			int startRow = GridSizeDelta * segX;
+			int startCol = GridSizeDelta * segY;
+			int endRow = Mathf.Min(GridSizeDelta * segX + GridSizeDelta, m_row);
+			int endCol = Mathf.Min(GridSizeDelta * segY + GridSizeDelta, m_row);
 			
 			var colorIdx = 0;
 			for(int i = startRow; i < endRow; ++i)
@@ -599,10 +601,10 @@ namespace Nirvana.Scene
 		private void ChangeToMaterialViewSegment(
 			int segX, int segY, Color32[] colors, Mesh mesh)
 		{
-			int startRow = 64 * segX;
-			int startCol = 64 * segY;
-			int endRow = Mathf.Min(64 * segX + 64, m_row);
-			int endCol = Mathf.Min(64 * segY + 64, m_row);
+			int startRow = GridSizeDelta * segX;
+			int startCol = GridSizeDelta * segY;
+			int endRow = Mathf.Min(GridSizeDelta * segX + GridSizeDelta, m_row);
+			int endCol = Mathf.Min(GridSizeDelta * segY + GridSizeDelta, m_row);
 			
 			var colorIdx = 0;
 			for(int i = startRow; i < endRow; ++i)

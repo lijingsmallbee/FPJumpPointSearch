@@ -26,9 +26,9 @@ namespace Nirvana.Scene
 			GUILayout.EndHorizontal();
 			for(int i = 0;i< 100;++i)
 			{
-				if(64*i >= grid.m_keepRow)
+				if(Grid.GridSizeDelta*i >= grid.m_keepRow)
 				{
-					grid.m_keepRow = 64*i;
+					grid.m_keepRow = Grid.GridSizeDelta*i;
 					break;
 				}
 			}
@@ -38,9 +38,9 @@ namespace Nirvana.Scene
 			GUILayout.EndHorizontal();
 			for(int j = 0;j< 100;++j)
 			{
-				if(64*j >= grid.m_keepColumn)
+				if(Grid.GridSizeDelta*j >= grid.m_keepColumn)
 				{
-					grid.m_keepColumn = 64*j;
+					grid.m_keepColumn = Grid.GridSizeDelta*j;
 					break;
 				}
 			}
@@ -160,6 +160,8 @@ namespace Nirvana.Scene
 						grid.transform.position = new Vector3((float)myGrid.X,0f,(float)myGrid.Z);
 						grid.GridSize = (float)myGrid.GridSize;
 						grid.Resize(myGrid.Height,myGrid.Width,false);
+                        grid.m_keepRow = myGrid.Height;
+                        grid.m_keepColumn = myGrid.Width;
 						for( int i=0; i<myGrid.Height; i++ )
 						{
 							string line = EditorUtils.readLine(content,ref readPos);

@@ -13,4 +13,11 @@ public class GridManager
         allGrids.TryGetValue(gType, out outV);
         return outV;
     }
+
+    public void InitGrid(string mapData,eGridType gridType)
+    {
+        GridWithAgent grid = new GridWithAgent();
+        grid.CreateFromString(mapData);
+        allGrids.Add(gridType, grid);
+    }
 }
