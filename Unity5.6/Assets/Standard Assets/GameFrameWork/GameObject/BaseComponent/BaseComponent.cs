@@ -19,7 +19,7 @@ public abstract class BaseFSComponent : FSComponent
         _ownerObject = null;
     }
     private FSGameObject _ownerObject;
-    public FSGameObject GameObject
+    public FSGameObject fsGameObject
     {
         get { return _ownerObject; }
         //这个函数只有第一次调用才有效，后续无法修改
@@ -30,7 +30,7 @@ public abstract class BaseFSComponent : FSComponent
         }
     }
 
-    public sealed override void InternalStep()
+    private void InternalStep()
     {
         if (_status == eComponentStatus.step)
         {
@@ -49,11 +49,22 @@ public abstract class BaseFSComponent : FSComponent
         }
     }
 
-    public sealed override void InternalAwake()
+    private void InternalAwake()
     {
         _frameId = BaseBattleInstance.Instance.frameController.GetFrame();
         _status = eComponentStatus.awake;
         OnAwake();
+    }
+
+    public sealed override  string GetName()
+    {
+        return this.GetType().Name;
+    }
+
+    public string Name
+    {
+        get { return fsGameObject.Name; }
+        set { fsGameObject.Name = value; }
     }
 
 }

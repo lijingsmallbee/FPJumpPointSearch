@@ -17,7 +17,6 @@ public class GameStarter : MonoBehaviour {
         if (passtime >= 0.03f)
         {
             BaseBattleInstance.Instance.OnStep();
-            BaseBattleInstance.Instance.OnPostStep();
         }
 	}
 
@@ -29,8 +28,9 @@ public class GameStarter : MonoBehaviour {
         }
         if(GUILayout.Button("Goblin"))
         {
-            FSGameObject gob = new FSGameObject("goblin");
+            FSGameObject gob = BaseBattleInstance.Instance.CreateGameObject("Goblin");
             gob.AddComponent<FSCharacterController>();
+            gob.AddComponent<FSUnityController>();
             //spawn goblin
         }
         if (GUILayout.Button("boar knight"))
